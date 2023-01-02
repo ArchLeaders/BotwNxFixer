@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <Content Include="7z64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+	
+  <ItemGroup>
+    <PackageReference Include="BotW-HKX2" Version="1.0.0" />
+    <PackageReference Include="SarcLibrary" Version="2.0.2" />
+    <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.5.0.366" />
+    <PackageReference Include="Yaz0Library" Version="1.0.5" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <Content Update="C:\Users\ArchLeaders\.nuget\packages\yaz0library\1.0.5\contentFiles\any\net7.0\Lib\Yaz0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

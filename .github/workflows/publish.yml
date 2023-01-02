@@ -33,7 +33,7 @@ jobs:
         with:
           dotnet-version: "7.0.x"
 
-      - name: Publish BotwNxFixer (Windows)
+      - name: Publish BotwNxFixer
         run: dotnet publish src/${{ env.proj }}.csproj -r ${{ matrix.platform.runtime }} --configuration Release --version-suffix ${{ github.event.release.tag_name }} --output ${{ github.workspace }}/${{ matrix.platform.name }} --sc false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 
       - name: Archive Release
@@ -43,12 +43,9 @@ jobs:
           filename: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
           path: ${{ github.workspace }}/${{ matrix.platform.name }}/*.*
 
-      - name: "Upload release asset"
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.github_token }}
+      - uses: Shopify/upload-to-release@v1.0.1
+        name: Upload artifacts
         with:
-          upload_url: ${{ github.event.release.url }}
-          asset_path: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
-          asset_name: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
-          asset_content_type: application/zip
+          name: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}

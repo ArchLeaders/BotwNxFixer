@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotwNxHavokFixer", "src\BotwNxHavokFixer.csproj", "{77439C4B-624D-44B3-81F5-CE0A60D63429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BotwNxFixer", "src\BotwNxFixer.csproj", "{77439C4B-624D-44B3-81F5-CE0A60D63429}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

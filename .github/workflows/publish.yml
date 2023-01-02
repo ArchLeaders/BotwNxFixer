@@ -1,0 +1,54 @@
+name: Deploy
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  release:
+    name: Release ${{ matrix.platform.name }}
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        platform:
+          - os: ubuntu-latest
+            name: Linux
+            ext: ""
+            arch: tar
+            runtime: linux-x64
+          - os: ubuntu-latest
+            name: Windows
+            ext: .exe
+            arch: zip
+            runtime: win-x64
+
+    env:
+      proj: "BotwNxFixer"
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Install DotNET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "7.0.x"
+
+      - name: Publish BotwNxFixer (Windows)
+        run: dotnet publish src/${{ env.proj }}.csproj -r ${{ matrix.platform.runtime }} --configuration Release --version-suffix ${{ github.event.release.tag_name }} --output ${{ github.workspace }}/${{ matrix.platform.name }} --sc false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+
+      - name: Archive Release
+        uses: thedoctor0/zip-release@main
+        with:
+          type: ${{ matrix.platform.arch }}
+          filename: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
+          path: ${{ github.workspace }}/${{ matrix.platform.name }}/*.*
+
+      - name: "Upload release asset"
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          upload_url: ${{ github.event.release.url }}
+          asset_path: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
+          asset_name: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
+          asset_content_type: application/zip

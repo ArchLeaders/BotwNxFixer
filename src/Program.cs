@@ -1,4 +1,4 @@
-﻿using ArchFixTool;
+﻿using BotwNxFixer;
 using Nintendo.Yaz0;
 using SevenZip;
 using System.Reflection;

@@ -3,7 +3,7 @@ using Nintendo.Yaz0;
 using SarcLibrary;
 using System.IO;
 
-namespace ArchFixTool
+namespace BotwNxFixer
 {
     public class Util
     {

@@ -4,7 +4,7 @@ This tool is made to quickly fix WiiU converted Switch (NX) mods.
 
 It currently fixes Havok files, which were previously corrupted by BCML's converter until [this PR](https://github.com/NiceneNerd/BCML/pull/479), and also broken in [Nitram's Ultimate Converter](https://github.com/Nitr4m12/UltimateBotWConverter).
 
-***Note:** This is not a standalone converter, and must be used with [this patch](\patch\converter.py) of [Nitram's Ultimate Converter](https://github.com/Nitr4m12/UltimateBotWConverter)*
+***Note:** This is not a standalone converter, and must be used with [this patch](/patch/converter.py) of [Nitram's Ultimate Converter](https://github.com/Nitr4m12/UltimateBotWConverter)*
 
 ## Setup
 

@@ -40,12 +40,13 @@ jobs:
         uses: thedoctor0/zip-release@main
         with:
           type: ${{ matrix.platform.arch }}
-          filename: ../${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
-          directory: ${{ github.workspace }}/${{ matrix.platform.name }}
+          filename: ${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
+          directory: ${{ github.workspace }}
+          path: ${{ matrix.platform.name }}/**
 
       - uses: Shopify/upload-to-release@v1.0.1
         name: Upload artifacts
         with:
           name: ${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          path: ../${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
+          path: ${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}

@@ -1,14 +1,14 @@
 ﻿using BotwNxFixer;
 using Nintendo.Yaz0;
 using SevenZip;
-using System.Reflection;
 
 if (!(args.Length > 0 && File.Exists(args[0]) && Path.GetExtension(args[0]) == ".bnp")) {
     Console.WriteLine("Invalid input mod, please specify a path to a BNP");
     Console.ReadLine();
+    Environment.Exit(1);
 }
 
-SevenZipBase.SetLibraryPath(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? "", "7z64.dll"));
+Util.SetupDependencies();
 
 string path = Path.Combine(Path.GetDirectoryName(args[0]) ?? "", Path.GetFileNameWithoutExtension(args[0]));
 using (SevenZipExtractor extractor = new(args[0])) {

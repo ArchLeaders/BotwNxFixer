@@ -1,7 +1,9 @@
 ﻿using HKX2;
 using Nintendo.Yaz0;
 using SarcLibrary;
+using SevenZip;
 using System.IO;
+using System.Reflection;
 
 namespace BotwNxFixer
 {
@@ -98,6 +100,29 @@ namespace BotwNxFixer
             }
 
             return false;
+        }
+
+        public static void SetupDependencies()
+        {
+            string _7z = Path.Combine(AppContext.BaseDirectory, "7z64.dll");
+            string _yaz0 = Path.Combine(AppContext.BaseDirectory, "Lib", "Yaz0.dll");
+
+            SevenZipBase.SetLibraryPath(_7z);
+
+            if (!File.Exists(_7z)) {
+                ExtractResource("7z64.dll", _7z);
+            }
+
+            if (!File.Exists(_yaz0)) {
+                ExtractResource("Lib.Yaz0.dll", _yaz0);
+            }
+        }
+
+        public static void ExtractResource(string name, string output)
+        {
+            using Stream stream = Assembly.GetCallingAssembly().GetManifestResourceStream($"{nameof(BotwNxFixer)}.{name}") ?? throw new FileNotFoundException($"Could not find the embedded file '{name}'");
+            using FileStream fs = File.Create(output);
+            stream.CopyTo(fs);
         }
     }
 }

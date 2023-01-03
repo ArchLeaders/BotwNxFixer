@@ -34,19 +34,11 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Publish BotwNxFixer
-        run: dotnet publish src/${{ env.proj }}.csproj -r ${{ matrix.platform.runtime }} --configuration Release --version-suffix ${{ github.event.release.tag_name }} --output ${{ github.workspace }}/${{ matrix.platform.name }} --sc false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-
-      - name: Archive Release
-        uses: thedoctor0/zip-release@main
-        with:
-          type: ${{ matrix.platform.arch }}
-          filename: ${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
-          directory: ${{ github.workspace }}
-          path: ${{ matrix.platform.name }}/**
+        run: dotnet publish src/${{ env.proj }}.csproj -r ${{ matrix.platform.runtime }} --configuration Release --version-suffix ${{ github.event.release.tag_name }} --output ${{ matrix.platform.name }} --sc false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 
       - uses: Shopify/upload-to-release@v1.0.1
         name: Upload artifacts
         with:
-          name: ${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
+          name: ${{ env.proj }}-${{ github.event.release.tag_name }}${{ matrix.platform.ext }}
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          path: ${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
+          path: ${{ matrix.platform.name }}/${{ env.proj }}${{ matrix.platform.ext }}

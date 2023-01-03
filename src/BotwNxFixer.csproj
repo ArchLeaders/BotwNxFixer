@@ -8,18 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Lib\Yaz0.dll" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <Content Include="7z64.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Lib\Yaz0.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-    </Content>
+    <EmbeddedResource Include="7z64.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Lib\Yaz0.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
 	
   <ItemGroup>

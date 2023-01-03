@@ -8,6 +8,6 @@ It currently fixes Havok files, which were previously corrupted by BCML's conver
 
 ## Setup
 
-- Download the latest release from this page, and extract it anywhere on your PC.
-- Drag and drop your _switch converted_ bnp onto the exe and wait for the fixer to complete.
+- Download the latest release from this page and save it anywhere on your PC.
+- Drag and drop your _switch converted_ bnp onto the exe and wait for the tool to complete.
 - **(Only on pre-3.10.2 BCML versions):** Download [dev.py]() from BCML's source to get the edits before BCML **3.10.2**

@@ -40,7 +40,7 @@ jobs:
         uses: thedoctor0/zip-release@main
         with:
           type: ${{ matrix.platform.arch }}
-          filename: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
+          filename: ${{ env.proj }}-${{ github.event.release.tag_name }}-${{ matrix.platform.name }}.${{ matrix.platform.arch }}
           path: ${{ matrix.platform.name }}/*.*
 
       - uses: Shopify/upload-to-release@v1.0.1

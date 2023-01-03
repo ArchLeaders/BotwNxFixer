@@ -34,7 +34,7 @@ jobs:
           dotnet-version: "7.0.x"
 
       - name: Publish BotwNxFixer
-        run: dotnet publish src/${{ env.proj }}.csproj -r ${{ matrix.platform.runtime }} --configuration Release --version-suffix ${{ github.event.release.tag_name }} --output ${{ matrix.platform.name }} --sc false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+        run: dotnet publish src/${{ env.proj }}.csproj -r ${{ matrix.platform.runtime }} --configuration Release -p:Version=${{ github.event.release.tag_name }} --output ${{ matrix.platform.name }} --sc false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 
       - uses: Shopify/upload-to-release@v1.0.1
         name: Upload artifacts

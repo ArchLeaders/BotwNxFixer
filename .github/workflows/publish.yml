@@ -41,7 +41,7 @@ jobs:
         with:
           type: ${{ matrix.platform.arch }}
           filename: ${{ env.proj }}-${{ github.event.release.tag_name }}.${{ matrix.platform.arch }}
-          path: '*.*'
+          path: '**/*.*'
 
       - uses: Shopify/upload-to-release@v1.0.1
         name: Upload artifacts

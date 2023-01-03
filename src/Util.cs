@@ -121,6 +121,7 @@ namespace BotwNxFixer
         public static void ExtractResource(string name, string output)
         {
             using Stream stream = Assembly.GetCallingAssembly().GetManifestResourceStream($"{nameof(BotwNxFixer)}.{name}") ?? throw new FileNotFoundException($"Could not find the embedded file '{name}'");
+            Directory.CreateDirectory(Path.GetDirectoryName(output) ?? "");
             using FileStream fs = File.Create(output);
             stream.CopyTo(fs);
         }

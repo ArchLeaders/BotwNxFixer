@@ -20,7 +20,7 @@ jobs:
           - os: ubuntu-latest
             name: Windows
             ext: .exe
-            arch: zip
+            arch: tar
             runtime: win-x64
 
     env:

@@ -21,7 +21,7 @@ jobs:
             name: Windows
             ext: .exe
             arch: zip
-            runtime: linux-x64
+            runtime: win-x64
 
     env:
       proj: "BotwNxFixer"

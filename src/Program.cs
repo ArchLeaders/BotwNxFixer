@@ -1,6 +1,6 @@
 ﻿using BotwNxFixer;
-using Nintendo.Yaz0;
 using SevenZip;
+using Yaz0Library;
 
 Console.Title = $"{nameof(BotwNxFixer)} - v{typeof(Program).Assembly.GetName().Version?.ToString(3)}";
 
@@ -42,7 +42,8 @@ await Parallel.ForEachAsync(Directory.EnumerateFiles(path, "*.*", SearchOption.A
             Console.WriteLine($"Fixed '{Path.GetRelativePath(path, file)}'");
         }
     }, cancellationToken);
-    await File.WriteAllBytesAsync(file, isYaz0 ? Yaz0.CompressFast(convertedData) : convertedData, cancellationToken);
+
+    await File.WriteAllBytesAsync(file, isYaz0 ? Yaz0.Compress(convertedData).ToArray() : convertedData, cancellationToken);
 });
 
 SevenZipCompressor compressor = new() {

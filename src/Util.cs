@@ -1,9 +1,8 @@
 ﻿using HKX2;
-using Nintendo.Yaz0;
 using SarcLibrary;
 using SevenZip;
-using System.IO;
 using System.Reflection;
+using Yaz0Library;
 
 namespace BotwNxFixer
 {
@@ -40,7 +39,7 @@ namespace BotwNxFixer
                         Console.WriteLine($"Fixed '{sarcFile.Key}'");
                     }
                 });
-                sarc[sarcFile.Key] = isYaz0 ? Yaz0.CompressFast(convertedData) : convertedData;
+                sarc[sarcFile.Key] = isYaz0 ? Yaz0.Compress(convertedData).ToArray() : convertedData;
             });
 
             return sarc.ToBinary();
@@ -95,7 +94,7 @@ namespace BotwNxFixer
         {
             data = inData ?? File.ReadAllBytes(file);
             if (data.Length > 4 && data.AsSpan()[0..4].SequenceEqual("Yaz0"u8)) {
-                data = Yaz0.Decompress(data);
+                data = Yaz0.Decompress(data).ToArray();
                 return true;
             }
 

@@ -39,7 +39,7 @@ namespace BotwNxFixer
                         Console.WriteLine($"Fixed '{sarcFile.Key}'");
                     }
                 });
-                sarc[sarcFile.Key] = isYaz0 ? Yaz0.Compress(convertedData).ToArray() : convertedData;
+                sarc[sarcFile.Key] = isYaz0 ? Yaz0.Compress(convertedData, out Yaz0SafeHandle handle).ToArray() : convertedData;
             });
 
             return sarc.ToBinary();
@@ -104,14 +104,9 @@ namespace BotwNxFixer
         public static void SetupDependencies()
         {
             string _7z = Path.Combine(AppContext.BaseDirectory, "7z.dll");
-            string _yaz0 = Path.Combine(AppContext.BaseDirectory, "Lib", "Yaz0.dll");
 
             if (!File.Exists(_7z)) {
                 ExtractResource("7z64.dll", _7z);
-            }
-
-            if (!File.Exists(_yaz0)) {
-                ExtractResource("Lib.Yaz0.dll", _yaz0);
             }
 
             SevenZipBase.SetLibraryPath(_7z);

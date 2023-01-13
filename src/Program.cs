@@ -3,6 +3,7 @@ using SevenZip;
 using Yaz0Library;
 
 Console.Title = $"{nameof(BotwNxFixer)} - v{typeof(Program).Assembly.GetName().Version?.ToString(3)}";
+Yaz0Helper.LoadDlls();
 
 if (!(args.Length > 0 && File.Exists(args[0]) && Path.GetExtension(args[0]) == ".bnp")) {
     Console.WriteLine("Invalid input mod, please specify a path to a BNP");
@@ -43,7 +44,7 @@ await Parallel.ForEachAsync(Directory.EnumerateFiles(path, "*.*", SearchOption.A
         }
     }, cancellationToken);
 
-    await File.WriteAllBytesAsync(file, isYaz0 ? Yaz0.Compress(convertedData).ToArray() : convertedData, cancellationToken);
+    await File.WriteAllBytesAsync(file, isYaz0 ? Yaz0.Compress(convertedData, out Yaz0SafeHandle handle).ToArray() : convertedData, cancellationToken);
 });
 
 SevenZipCompressor compressor = new() {

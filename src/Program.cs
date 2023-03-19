@@ -32,7 +32,7 @@ await Parallel.ForEachAsync(Directory.EnumerateFiles(path, "*.*", SearchOption.A
         convertedData = Util.BfresToSwitch(data);
     }
     else if (Util.SarcExts.Contains(ext)) {
-        convertedData = Util.ConvertSarc(data);
+        convertedData = Util.ConvertSarc(data, Path.GetRelativePath(path, file));
     }
     else {
         return;

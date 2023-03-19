@@ -1,7 +1,10 @@
 ﻿using HKX2;
 using SarcLibrary;
 using SevenZip;
+using System.Formats.Tar;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using Yaz0Library;
 
 namespace BotwNxFixer
@@ -14,8 +17,9 @@ namespace BotwNxFixer
             ".sbmodelsh", ".sbeventpack", ".sstats", ".sblarc", ".blarc", // ".stera", ".sstera",
         };
 
-        public static byte[] ConvertSarc(byte[] data)
+        public static byte[] ConvertSarc(byte[] data, string path)
         {
+            List<string> tex2Keys = new();
             SarcFile sarc = SarcFile.FromBinary(data);
             Parallel.ForEach(sarc, (sarcFile) => {
                 string ext = Path.GetExtension(sarcFile.Key);
@@ -24,11 +28,15 @@ namespace BotwNxFixer
                 if (HavokExts.Contains(ext)) {
                     convertedData = HavokToSwitch(data, ext);
                 }
+                else if (Path.GetFileName(sarcFile.Key).EndsWith(".Tex2.sbfres")) {
+                    tex2Keys.Add(sarcFile.Key);
+                    return;
+                }
                 else if (ext == ".sbfres") {
                     convertedData = BfresToSwitch(data);
                 }
                 else if (SarcExts.Contains(ext)) {
-                    convertedData = ConvertSarc(data);
+                    convertedData = ConvertSarc(data, Path.Combine(path, "", sarcFile.Key));
                 }
                 else {
                     return;
@@ -41,6 +49,10 @@ namespace BotwNxFixer
                 });
                 sarc[sarcFile.Key] = isYaz0 ? Yaz0.Compress(convertedData, out Yaz0SafeHandle handle).ToArray() : convertedData;
             });
+
+            foreach (var key in tex2Keys) {
+                sarc[key.Replace(".Tex2.sbfres", ".Tex.sbfres")] = GetVanillaBytes(path, key);
+            }
 
             return sarc.ToBinary();
         }
@@ -88,6 +100,27 @@ namespace BotwNxFixer
         public static byte[] BfresToSwitch(byte[] data)
         {
             return data;
+        }
+
+        public static byte[] GetVanillaBytes(string path, string? fileName = null)
+        {
+            string vanillaFile = Path.Combine(GetNxGameDir(), "..", "..", path);
+
+            if (fileName != null) {
+                UnyazIfNeedBe(vanillaFile, out byte[] decompressed);
+                SarcFile sarc = SarcFile.FromBinary(decompressed);
+                return sarc[fileName];
+            }
+            else {
+                return File.ReadAllBytes(vanillaFile);
+            }
+        }
+
+        public static string GetNxGameDir()
+        {
+            string configFile = Path.Combine(Environment.GetEnvironmentVariable("%LOCALAPPDATA%") ?? "", "bcml", "settings.json");
+            Dictionary<string, JsonElement> config = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(File.ReadAllBytes(configFile))!;
+            return config["game_dir_nx"].GetString()!;
         }
 
         public static bool UnyazIfNeedBe(string file, out byte[] data, byte[]? inData = null)

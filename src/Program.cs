@@ -5,6 +5,8 @@ using Yaz0Library;
 Console.Title = $"{nameof(BotwNxFixer)} - v{typeof(Program).Assembly.GetName().Version?.ToString(3)}";
 Yaz0Helper.LoadDlls();
 
+Util.Args = args;
+
 if (!(args.Length > 0 && File.Exists(args[0]) && Path.GetExtension(args[0]) == ".bnp")) {
     Console.WriteLine("Invalid input mod, please specify a path to a BNP");
     Console.ReadLine();

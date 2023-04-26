@@ -32,6 +32,8 @@ namespace BotwNxFixer
         public static byte[] ConvertSarc(byte[] data, string path)
         {
             List<string> tex2Keys = new();
+            List<string> mdlKeys = new();
+
             SarcFile sarc = SarcFile.FromBinary(data);
             Parallel.ForEach(sarc, (sarcFile) => {
                 string ext = Path.GetExtension(sarcFile.Key);
@@ -40,8 +42,13 @@ namespace BotwNxFixer
                 if (HavokExts.Contains(ext)) {
                     convertedData = HavokToSwitch(data, ext);
                 }
-                else if (HasFlag("replace-tex2") && Path.GetFileName(sarcFile.Key).EndsWith(".Tex2.sbfres") && Path.GetFileName(path).StartsWith("Dungeon")) {
-                    tex2Keys.Add(sarcFile.Key);
+                else if (ext == ".sbfres" && Path.GetFileName(path).StartsWith("Dungeon")) {
+                    if (HasFlag("replace-tex2") && Path.GetFileName(sarcFile.Key).EndsWith(".Tex2.sbfres")) {
+                        tex2Keys.Add(sarcFile.Key);
+                    }
+                    else if (HasFlag("replace-bfres")) {
+                        mdlKeys.Add(sarcFile.Key);
+                    }
                     return;
                 }
                 else if (ext == ".sbfres") {
@@ -66,6 +73,10 @@ namespace BotwNxFixer
                 string file = key.Replace(".Tex2.sbfres", ".Tex.sbfres");
                 sarc[file] = GetVanillaBytes(path, file);
                 sarc.Remove(key);
+            }
+
+            foreach (var key in mdlKeys) {
+                sarc[key] = GetVanillaBytes(path, key);
             }
 
             return sarc.ToBinary();
